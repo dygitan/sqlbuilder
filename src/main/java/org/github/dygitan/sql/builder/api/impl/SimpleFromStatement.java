@@ -2,6 +2,7 @@ package org.github.dygitan.sql.builder.api.impl;
 
 import org.github.dygitan.sql.builder.api.FromStatement;
 import org.github.dygitan.sql.builder.api.SqlStatement;
+import org.github.dygitan.sql.builder.api.WhereStatement;
 
 public class SimpleFromStatement implements FromStatement {
 
@@ -12,11 +13,14 @@ public class SimpleFromStatement implements FromStatement {
     }
 
     @Override
-    public SqlStatement from(String table) {
+    public WhereStatement from(String table) {
         if (table == null || table.isEmpty()) {
             throw new IllegalArgumentException("From table is required.");
         }
 
-        return () -> sqlBuilder.append("FROM ").append(table).toString();
+        sqlBuilder.append("FROM ");
+        sqlBuilder.append(table);
+
+        return new SimpleWhereStatement(sqlBuilder);
     }
 }

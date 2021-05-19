@@ -1,19 +1,18 @@
 package org.github.dygitan.sql.builder;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SqlBuilderTest {
 
     @Test
     public void verify_simple_select_query() {
-        assertThat(new SqlBuilder()
+        assertEquals("SELECT column_a, column_b FROM table_a", new SqlBuilder()
                 .select("column_a", "column_b")
                 .from("table_a")
-                .build())
-                .isEqualTo("SELECT column_a, column_b FROM table_a");
+                .build());
     }
 
     @Test
@@ -29,6 +28,15 @@ public class SqlBuilderTest {
         assertThrows(IllegalArgumentException.class, () -> new SqlBuilder()
                 .select("column_a", "column_b")
                 .from(null)
+                .build());
+    }
+
+    @Test
+    public void verify_simple_select_query_with_where() {
+        assertEquals("SELECT column_a, column_b FROM table_a WHERE column_a > 100", new SqlBuilder()
+                .select("column_a", "column_b")
+                .from("table_a")
+                .where("column_a > 100")
                 .build());
     }
 }
